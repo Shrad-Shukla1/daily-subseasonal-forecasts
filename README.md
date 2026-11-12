@@ -2,7 +2,7 @@
 
 A static GitHub Pages site showing the weekly bias-corrected, downscaled SubC precipitation
 forecast maps for East (EA), West (WA) and Southern (SA) Africa: 30-day total, anomaly (mm)
-and percent of normal. Sister site to `../dekadal-forecasts/`.
+and percent of normal. Sister site to `../dekadal-subseasonal-forecasts/`.
 
 The maps are not stored here. The page loads them from
 <https://data.chc.ucsb.edu/products/SubX/Plots/>, where the daily SubC pipeline
