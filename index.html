@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Subseasonal 30-day Forecasts - Africa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🌍 Experimental Subseasonal 30-day Precipitation Forecasts</h1>
+        <p class="subtitle">Downscaled & Bias-Corrected Forecasts for Africa</p>
+        <p class="update-info">Updated weekly; each forecast covers the 30 days from its Thursday start</p>
+    </header>
+
+    <main>
+        <nav class="controls" aria-label="Forecast selection">
+            <div class="region-tabs" role="tablist" id="region-tabs">
+                <button role="tab" data-region="EA">East Africa</button>
+                <button role="tab" data-region="WA">West Africa</button>
+                <button role="tab" data-region="SA">Southern Africa</button>
+            </div>
+            <div class="week-picker">
+                <button id="prev-week" title="Earlier forecast" aria-label="Earlier forecast">◀</button>
+                <label for="week-select">Forecast start</label>
+                <select id="week-select"></select>
+                <button id="next-week" title="Later forecast" aria-label="Later forecast">▶</button>
+            </div>
+        </nav>
+
+        <p class="status" id="status">Looking for the latest forecast…</p>
+
+        <div class="map-grid" id="map-grid">
+            <section class="forecast-section" data-product="total">
+                <h2>Total rainfall (mm)</h2>
+                <div class="forecast-container">
+                    <a target="_blank" rel="noopener"><img alt=""></a>
+                    <p class="missing" hidden></p>
+                </div>
+            </section>
+            <section class="forecast-section" data-product="anomaly">
+                <h2>Anomaly vs normal (mm)</h2>
+                <div class="forecast-container">
+                    <a target="_blank" rel="noopener"><img alt=""></a>
+                    <p class="missing" hidden></p>
+                </div>
+            </section>
+            <section class="forecast-section" data-product="pct_normal">
+                <h2>Percent of normal (%)</h2>
+                <div class="forecast-container">
+                    <a target="_blank" rel="noopener"><img alt=""></a>
+                    <p class="missing" hidden></p>
+                </div>
+            </section>
+        </div>
+        <p class="hint">Click a map to open it at full size. Each panel is one model; the date in its
+            corner is when that model's forecast was initialized.</p>
+
+        <div style="text-align: center; margin: 1rem 0;">
+            <button class="refresh" onclick="refreshImages()">🔄 Refresh Images</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>About</h3>
+            <p>These maps show bias-corrected, downscaled 30-day precipitation forecasts for East, West
+                and Southern Africa from the SubC project (https://weather.ou.edu/~kpegion/subc/).
+                A new forecast starts each Thursday; models that arrive later in the week are added
+                as they come in, so a week's maps can change until the following Monday.</p>
+            <p>The anomaly and percent-of-normal maps compare each forecast with the 1999–2016 observed
+                average for the same calendar days. The observed dataset is named under each map's
+                colour bar.</p>
+
+            <h3>Data Source</h3>
+            <p>
+                <a href="https://data.chc.ucsb.edu/products/SubX/Plots/" target="_blank" rel="noopener">
+                    CHC Data Repository
+                </a>
+            </p>
+
+            <h3>Models</h3>
+            <p>Which models appear depends on what was available that week; each map labels its panels.</p>
+            <ul>
+                <li><strong>NCEP CFSv2</strong> - Climate Forecast System Version 2</li>
+                <li><strong>GMAO GEOS</strong> - NASA Global Modeling and Assimilation Office's Goddard Earth Observing System</li>
+                <li><strong>EMC GEFSv12</strong> - Global Ensemble Forecast System v12</li>
+                <li><strong>ECCC GEPS8</strong> - Environment and Climate Change Canada's Global Ensemble Prediction System v8</li>
+                <li><strong>ESRL FIMr1p1</strong> - NOAA ESRL Flow-following finite-volume Icosahedral Model</li>
+                <li><strong>RSMAS CCSM4</strong> - Community Climate System Model 4</li>
+            </ul>
+
+            <h3>📚 Relevant Publications</h3>
+            <ol class="publications">
+                <li>
+                    <strong>Turner, W., Shukla, S., Husak, G., Funk, C., Jones, C., & Baylis, K.</strong> (2025).
+                    Investigating the performance of high-resolution subseasonal precipitation forecasts in support of food insecurity early warning.
+                    <em>Environmental Research: Climate</em>, 4, 025002.
+                    <a href="https://doi.org/10.1088/2752-5295/adcadf" target="_blank">https://doi.org/10.1088/2752-5295/adcadf</a>
+                </li>
+                <li>
+                    <strong>Su, L., Cao, Q., Shukla, S., Pan, M., & Lettenmaier, D. P.</strong> (2023).
+                    Evaluation of subseasonal drought forecast skill over the coastal Western United States.
+                    <em>Journal of Hydrometeorology</em>, 24, 709–726.
+                    <a href="https://doi.org/10.1175/JHM-D-22-0103.1" target="_blank">https://doi.org/10.1175/JHM-D-22-0103.1</a>
+                </li>
+                <li>
+                    <strong>Cao, Q., Shukla, S., DeFlorio, M. J., Ralph, F. M., & Lettenmaier, D. P.</strong> (2021).
+                    Evaluation of the subseasonal forecast skill of floods associated with atmospheric rivers in coastal Western U.S. watersheds.
+                    <em>Journal of Hydrometeorology</em>, 22, 1535–1552.
+                    <a href="https://doi.org/10.1175/JHM-D-20-0219.1" target="_blank">https://doi.org/10.1175/JHM-D-20-0219.1</a>
+                </li>
+            </ol>
+
+            <p class="copyright">
+                Climate Hazards Center, UC Santa Barbara<br>
+                <span id="last-loaded"></span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Maps are written by the daily SubC pipeline to
+        //   {BASE}/{Thursday}/{DOM}_total_rainfall[_anomaly|_pct_normal]_{Thursday}_to_{Thursday+30d}.png
+        // The data server does not let other sites read its folder listings, so the page builds
+        // these names itself and finds the latest week by trying to load it.
+        const BASE = 'https://data.chc.ucsb.edu/products/SubX/Plots';
+        const FIRST_WEEK = '2026-09-24';     // first week in the Plots folder
+        const LOOKBACK_WEEKS = 6;            // how far back to look for the latest forecast
+        const REGIONS = {EA: 'East Africa', WA: 'West Africa', SA: 'Southern Africa'};
+        const PRODUCTS = {
+            total:      {suffix: '',             label: 'total rainfall'},
+            anomaly:    {suffix: '_anomaly',     label: 'rainfall anomaly'},
+            pct_normal: {suffix: '_pct_normal',  label: 'rainfall percent of normal'},
+        };
+
+        let stamp = Date.now();
+        let weeks = [];                       // ISO dates, newest first
+        let state = {region: 'EA', week: null};
+
+        const iso = d => d.toISOString().slice(0, 10);
+        const addDays = (s, n) => { const d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return iso(d); };
+        function thursdayOnOrBefore(d) {
+            const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+            t.setUTCDate(t.getUTCDate() - ((t.getUTCDay() - 4 + 7) % 7));
+            return iso(t);
+        }
+        function mapUrl(region, product, week) {
+            return `${BASE}/${week}/${region}_total_rainfall${PRODUCTS[product].suffix}_${week}_to_${addDays(week, 30)}.png`;
+        }
+        function exists(url) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url + '?t=' + stamp;
+            });
+        }
+        function fmt(week) {
+            return new Date(week + 'T00:00:00Z').toLocaleDateString('en-GB',
+                {day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC'});
+        }
+
+        // Newest week whose East Africa total-rainfall map is on the server.
+        async function findLatestWeek() {
+            let week = thursdayOnOrBefore(new Date());
+            for (let i = 0; i <= LOOKBACK_WEEKS && week >= FIRST_WEEK; i++, week = addDays(week, -7)) {
+                if (await exists(mapUrl('EA', 'total', week))) return week;
+            }
+            return null;
+        }
+
+        function render() {
+            const {region, week} = state;
+            document.querySelectorAll('#region-tabs button').forEach(b =>
+                b.setAttribute('aria-selected', b.dataset.region === region));
+            document.getElementById('week-select').value = week;
+            document.getElementById('prev-week').disabled = week === weeks[weeks.length - 1];
+            document.getElementById('next-week').disabled = week === weeks[0];
+            document.getElementById('status').textContent =
+                `${REGIONS[region]}: forecast for ${fmt(week)} to ${fmt(addDays(week, 30))}` +
+                (week === weeks[0] ? ' (latest)' : '');
+
+            document.querySelectorAll('.forecast-section').forEach(sec => {
+                const url = mapUrl(region, sec.dataset.product, week);
+                const link = sec.querySelector('a'), img = sec.querySelector('img');
+                const missing = sec.querySelector('.missing');
+                img.classList.remove('loaded');
+                img.hidden = false; missing.hidden = true;
+                img.onload = () => img.classList.add('loaded');
+                img.onerror = () => {
+                    img.hidden = true; missing.hidden = false;
+                    missing.textContent = `No ${REGIONS[region]} map was produced for this week.`;
+                };
+                img.alt = `${REGIONS[region]} 30-day ${PRODUCTS[sec.dataset.product].label} forecast from ${fmt(week)}`;
+                link.href = url;
+                img.src = url + '?t=' + stamp;
+            });
+            history.replaceState(null, '', `#${region}/${week}`);
+        }
+
+        function refreshImages() {
+            stamp = Date.now();
+            render();
+            document.getElementById('last-loaded').textContent =
+                'Images refreshed: ' + new Date().toLocaleString();
+        }
+
+        async function init() {
+            document.getElementById('last-loaded').textContent = 'Page loaded: ' + new Date().toLocaleString();
+            const latest = await findLatestWeek();
+            if (!latest) {
+                document.getElementById('status').textContent =
+                    'No recent forecast maps were found. Please check the CHC Data Repository link below.';
+                document.getElementById('map-grid').hidden = true;
+                return;
+            }
+            for (let w = latest; w >= FIRST_WEEK; w = addDays(w, -7)) weeks.push(w);
+
+            const select = document.getElementById('week-select');
+            weeks.forEach(w => select.add(new Option(fmt(w) + (w === latest ? ' (latest)' : ''), w)));
+
+            // Shareable links: #WA/2026-10-29
+            const [hRegion, hWeek] = location.hash.slice(1).split('/');
+            state.region = REGIONS[hRegion] ? hRegion : 'EA';
+            state.week = weeks.includes(hWeek) ? hWeek : latest;
+
+            document.querySelectorAll('#region-tabs button').forEach(b =>
+                b.addEventListener('click', () => { state.region = b.dataset.region; render(); }));
+            select.addEventListener('change', () => { state.week = select.value; render(); });
+            const step = n => { const i = weeks.indexOf(state.week) + n; if (weeks[i]) { state.week = weeks[i]; render(); } };
+            document.getElementById('prev-week').addEventListener('click', () => step(1));
+            document.getElementById('next-week').addEventListener('click', () => step(-1));
+            render();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
